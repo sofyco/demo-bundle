@@ -8,6 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ExampleControllerTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        restore_exception_handler();
+    }
+
     public function testExample(): void
     {
         $body = \json_encode(['foo' => 'baz']) ?: '';
@@ -16,13 +23,6 @@ final class ExampleControllerTest extends WebTestCase
 
         self::assertSame($body, $response->getContent());
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-    }
-
-    protected function tearDown(): void
-    {
-        self::ensureKernelShutdown();
-
-        restore_exception_handler();
     }
 
     private function sendRequest(string $body): Response
