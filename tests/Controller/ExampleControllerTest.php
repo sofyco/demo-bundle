@@ -18,6 +18,13 @@ final class ExampleControllerTest extends WebTestCase
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
+    protected function tearDown(): void
+    {
+        self::ensureKernelShutdown();
+
+        restore_exception_handler();
+    }
+
     private function sendRequest(string $body): Response
     {
         $client = self::createClient();
